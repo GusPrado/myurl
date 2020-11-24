@@ -1,9 +1,8 @@
 import {Request, Response} from 'express'
 
 import { Link } from '../models/link'
+import linksRepository from '../models/linksRepository'
 
-const links: Link[] = []
-let nextId = 1
 
 function genCode() {
   let text = ''
@@ -15,37 +14,38 @@ function genCode() {
   return text
 }
 
-function postLink(req: Request, res: Response) {
+async function postLink(req: Request, res: Response) {
   const link = req.body as Link
-  link.id = nextId++
   link.code = genCode()
   link.hits = 0
 
-  links.push(link)
+  const result = await linksRepository.add(link)
+  if (!result.id) return res.sendStatus(400)
+
+  link.id = result.id
+
   res.status(201).json(link)
 }
 
 
-function getLink(req: Request, res: Response) {
+async function getLink(req: Request, res: Response) {
   const code = req.params.code as string
-  const link = links.find(item => item.code === code)
+  const link = await linksRepository.findByCode(code)
   if (!link)
     res.sendStatus(404)
   else
     res.json(link)
-
 }
 
 
-function hitLink(req: Request, res: Response) {
+async function hitLink(req: Request, res: Response) {
   const code = req.params.code as string
-  const index = links.findIndex(item => item.code === code)
+  const link = await linksRepository.hit(code)
 
-  if (index === -1)
+  if (!link)
     res.sendStatus(404)
   else
-    links[index].hits!++
-    res.json(links[index])
+    res.json(link)
 }
 
 export default {
