@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Home extends React.Component {
+class NotFound extends React.Component {
   constructor(props) {
 
     super(props)
@@ -8,10 +8,10 @@ class Home extends React.Component {
 
   render() {
     return (
-      <p>É nois!!!</p>
+      <p>404 page!!!</p>
     )
   }
 
 }
 
-export default Home
+export default NotFound
