@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Logo, HeaderContainer } from './styles'
-import urlIcon from '../../assets/url_icon.png'
+import urlIcon from '../../assets/url_icon2.png'
 
 function Header({ children }){
   return (
