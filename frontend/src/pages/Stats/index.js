@@ -1,4 +1,6 @@
 import React from 'react'
+import { parseISO, formatRelative } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Container } from 'react-bootstrap'
 
@@ -16,6 +18,28 @@ class Stats extends React.Component {
       isLoading: false,
       shortenedURL: {},
       errorMessage: ''
+    }
+  }
+
+  async componentDidMount() {
+    const {code} = this.props.match.params
+
+    try {
+      const service = new ShortenerService()
+      const shortenedURL = await service.getStats(code)
+
+      const parsedDate = parseISO(shortenedURL.updatedAt)
+      const currentDate = new Date()
+
+      const relativeDate = formatRelative(parsedDate, currentDate, {
+        locale: ptBR
+      })
+
+      shortenedURL.relativeDate = relativeDate
+
+      this.setState({ isLoading: false, shortenedURL})
+    } catch (err) {
+      this.setState({ isLoading: false, errorMessage: 'A URL encurtada solicitada não existe'})
     }
   }
 
@@ -37,7 +61,7 @@ class Stats extends React.Component {
         ) : (
           <StatsContainer className="text-center">
             <p><strong>https://myurl.tk/{shortenedURL.code}</strong></p>
-            <p>Redireciona para: <br/>{shortenedURL.code}</p>
+            <p>Redireciona para: <br/>{shortenedURL.url}</p>
             <StatsRow>
               <StatsBox>
                 <strong>{shortenedURL.hits}</strong>

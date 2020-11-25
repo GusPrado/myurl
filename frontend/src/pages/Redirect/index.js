@@ -1,14 +1,63 @@
 import React from 'react'
+import Header from '../../components/Header'
+import { Container } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import ShortenerService from '../../services/shortenerService'
+
+import { StatsContainer } from './styles'
 
 class Redirect extends React.Component {
   constructor(props) {
-
     super(props)
+
+    this.state = {
+      isLoading: false,
+      url: '',
+      errorMessage: ''
+    }
+  }
+
+  async componentDidMount() {
+    const {code} = this.props.match.params
+
+    try {
+      const service = new ShortenerService()
+      const {url} = await service.getLink(code)
+
+      window.location = url
+
+    } catch(err) {
+      this.setState({ isLoading: false, errorMessage: 'Esta URL encurtada não existe'})
+    }
   }
 
   render() {
+    const {errorMessage} = this.state
+
     return (
-      <p>Redirect page!!!</p>
+      <Container>
+        {
+          errorMessage ? (
+            <>
+              <Header>
+                Seu novo encurtador de URLs :
+              </Header>
+              <StatsContainer className="text-center">
+            <FontAwesomeIcon 
+              size="3x" 
+              color="#f8d7da" 
+              icon="exclamation-triangle" 
+            />
+            <p className="mb-3">{errorMessage}</p>
+            <a className="btn btn-primary" href="/">Encurtar nova URL</a>
+          </StatsContainer>
+            </>
+          ) : (
+            <p className="text-center">Redirecionando...</p>
+          )
+        }
+      </Container>
     )
   }
 
