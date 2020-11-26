@@ -4,6 +4,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Container } from 'react-bootstrap'
 
+import vars from '../../configs/vars'
 import ShortenerService from '../../services/shortenerService'
 
 import Header from '../../components/Header'
@@ -60,7 +61,7 @@ class Stats extends React.Component {
           </StatsContainer>
         ) : (
           <StatsContainer className="text-center">
-            <p><strong>https://myurl.tk/{shortenedURL.code}</strong></p>
+            <p><strong>{vars.HOST_APP + shortenedURL.code}</strong></p>
             <p>Redireciona para: <br/>{shortenedURL.url}</p>
             <StatsRow>
               <StatsBox>

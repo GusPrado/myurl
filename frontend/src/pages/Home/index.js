@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, InputGroup, FormControl, Button, Alert, Spinner } from 'react-bootstrap'
 
+import vars from '../../configs/vars'
 import { ContentContainer, Form, AdsBlock } from './styles'
 import Header from '../../components/Header'
 import ShortenerService from '../../services/shortenerService'
@@ -55,7 +56,7 @@ class Home extends React.Component {
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="Digite a URL para encurtar"
-                defaultValue=""
+                defaultValue={vars.HOST_APP + code}
                 onChange={evt => this.setState({ url: evt.target.value })}
               />
               <InputGroup.Append>
@@ -70,7 +71,7 @@ class Home extends React.Component {
                   <InputGroup className="mb-3">
                     <FormControl
                       autoFocus={true}
-                      defaultValue={`http://myurl.tk/${code}`}
+                      defaultValue={vars.HOST_APP + code}
                       ref={(input) => this.inputURL = input}
                     />
                     <InputGroup.Append>
