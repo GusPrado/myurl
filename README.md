@@ -1,4 +1,4 @@
-#:fa-link: Welcome to myURL shortener!!
+# :fa-link: Welcome to myURL shortener!!
 
 [![myurl1.png](https://i.postimg.cc/wxRQc5Qj/myurl1.png)](https://postimg.cc/kD9S7bH0)
 
@@ -7,20 +7,20 @@
 [![myurl3.png](https://i.postimg.cc/WzZmNj1k/myurl3.png)](https://postimg.cc/T5R50zmd)
 
 
-##Try out in:
-##http://www.myurl-short.tk
+## Try out in:
+## http://www.myurl-short.tk
 
 This project was built under a Monorepo instance where Backend and Frontend is on the
 same directory structure.
 
 To use it by yourself just execute steps below after fork it from here.
 
-####To run backend:
+#### To run backend:
 1. Use an instance of MySQL with a schema named myurl. Then edit the backend/src/database.ts to configure your own database username/password.
 2. Run `nmp install` on backend folder
 3. Run `nmp start` on backend folder
 
-####To run frontend:
+#### To run frontend:
 1. Run `yarn add` on frontend folder
 2. Run `yarn start` on frontend folder
 
