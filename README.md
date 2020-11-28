@@ -1,4 +1,4 @@
-# :fa-link: Welcome to myURL shortener!!
+# Welcome to myURL shortener!! :star_struck:
 
 [![myurl1.png](https://i.postimg.cc/wxRQc5Qj/myurl1.png)](https://postimg.cc/kD9S7bH0)
 
