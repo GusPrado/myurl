@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, InputGroup, FormControl, Button, Alert, Spinner } from 'react-bootstrap'
+import * as Yup from 'yup'
 
 import vars from '../../configs/vars'
 import { ContentContainer, Form, AdsBlock } from './styles'
@@ -25,19 +26,30 @@ class Home extends React.Component {
 
     this.setState({ isLoading: true, errorMessage: ''})
 
-    if (!url) {
-      this.setState({ isLoading: false, errorMessage: 'Informe uma URL para encurtar'}
-      )
-    } else {
-      try {
-        const service = new ShortenerService()
-        const result = await service.generate({ url })
+    try {
+      const schema = Yup.string()
+        .required('Informe uma URL para encurtar')
+        .url('Formato inválido')
 
-        this.setState({ isLoading: false, code: result.code })
-      } catch (err) {
-        this.setState({ isLoading: false, errorMessage: 'Ocorreu um erro neste processo. Favor tentar novamente.'})
-      }
+      await schema.validate(url, {
+        abortEarly: false
+      })
+    } catch (err) {
+      console.log(err.message)
+      this.setState({ isLoading: false, errorMessage: err.message})
+      return
     }
+
+    try {
+      
+      const service = new ShortenerService()
+      const result = await service.generate({ url })
+
+      this.setState({ isLoading: false, code: result.code })
+    } catch (err) {
+      this.setState({ isLoading: false, errorMessage: 'Ocorreu um erro neste processo. Favor tentar novamente.'})
+    }
+    
   }
 
   copyToClipboard = () => {
@@ -55,12 +67,11 @@ class Home extends React.Component {
           <Form onSubmit={this.handleSubmit}>
             <InputGroup className="mb-3">
               <FormControl
-                placeholder="Digite a URL para encurtar"
-                defaultValue={vars.HOST_APP + code}
+                placeholder="Digite a URL para encurtar - não esqueça o http:// ou https:// no início"
                 onChange={evt => this.setState({ url: evt.target.value })}
               />
               <InputGroup.Append>
-                <Button variant="primary" type="submit">Encurtar</Button>
+                <Button variant="success" type="submit">Encurtar</Button>
               </InputGroup.Append>
             </InputGroup>
             { isLoading ? (
@@ -83,7 +94,7 @@ class Home extends React.Component {
                       </Button>
                     </InputGroup.Append>
                   </InputGroup>
-                  <p>Para acompanhar as estatísticas deste link, acesse htps://myurl.tk/{code}</p>
+                <p>Para acompanhar as estatísticas deste link, acesse <a href={`${vars.HOST_APP + code}/stats`} alt="stats link">{`${vars.HOST_APP + code}/stats`}</a></p>
                 </>
               ) 
             )}
@@ -91,7 +102,7 @@ class Home extends React.Component {
           </Form>
         </ContentContainer>
         <ContentContainer>
-          <AdsBlock>AdSense</AdsBlock>
+          <AdsBlock>AdSense here!</AdsBlock>
         </ContentContainer>
       </Container>
     )

@@ -1,17 +1,18 @@
 import React from 'react'
 
+import {Container, Image} from './styles'
+
+import notFound from '../../assets/not_found.png'
+
 class NotFound extends React.Component {
-  constructor(props) {
-
-    super(props)
-  }
-
+ 
   render() {
     return (
-      <p>404 page!!!</p>
+      <Container>
+        <Image src={notFound} alt="Não encontrado"/>
+      </Container>
     )
   }
-
 }
 
 export default NotFound
